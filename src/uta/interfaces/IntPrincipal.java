@@ -8,7 +8,7 @@ public class IntPrincipal extends javax.swing.JFrame {
 
     
     IntEstudiantes estudiantes = new IntEstudiantes();
-    IntReporte reportes=new IntReporte();
+    IntReporteCursos reportes=new IntReporteCursos();
     
     public IntPrincipal() {
         initComponents();
