@@ -5,6 +5,8 @@
  */
 package uta.interfaces;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +15,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Intel
  */
-public class IntUsuarios extends javax.swing.JFrame {
+public class IntUsuarios extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form IntUsuarios
@@ -80,7 +83,7 @@ public class IntUsuarios extends javax.swing.JFrame {
 
     private void cargarCargos() {
         DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();
-        String[] cargos = {"Admin", "Secretaria"};
+        String[] cargos = {"SELECCIONE", "ADMIN", "SECRETARIA"};
         for (String cargo : cargos) {
             modeloCombo.addElement(cargo);
         }
@@ -89,7 +92,7 @@ public class IntUsuarios extends javax.swing.JFrame {
 
     private void cargarUsuarios(String cedula) {
         try {
-            String[] titulos = {"CEDULA", "APELLIDO", "NOMBRE", "CARGO", "CONTRASEÑA"};
+            String[] titulos = {"CEDULA", "APELLIDO", "NOMBRE", "CARGO"};
             modeloTabla = new DefaultTableModel(null, titulos);
             String[] registros = new String[5];
             conexion cc = new conexion();
@@ -112,6 +115,7 @@ public class IntUsuarios extends javax.swing.JFrame {
     }
 
     private void insertarUsuario() {
+
         if (jtxtCedula.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar su cédula");
             jtxtCedula.requestFocus();
@@ -121,52 +125,55 @@ public class IntUsuarios extends javax.swing.JFrame {
         } else if (jtxtApellido.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar su apellido");
             jtxtApellido.requestFocus();
-        } else if (jcbxCargo.getSelectedItem() == null) {
+        } else if (jcbxCargo.getSelectedItem().toString().equals("SELECCIONE")) {
             JOptionPane.showMessageDialog(null, "Debes elegir una cargo");
             jcbxCargo.requestFocus();
-        } else if (jtxtContraseña.getText() == null) {
-            JOptionPane.showMessageDialog(null, "Debes ingresar una contraseña minimo 3 caracteres");
+        } else if (jtxtContraseña.getPassword() == null) {
+            JOptionPane.showMessageDialog(null, "Debes ingresar una contraseña");
             jtxtContraseña.requestFocus();
         } else {
-            try {
 
-                String cedula = jtxtCedula.getText();
-                String apellido = jtxtApellido.getText();
-                String nombre = jtxtNombre.getText();
-                String clave = jtxtContraseña.getText();
-                String cargo = jcbxCargo.getSelectedItem().toString();
-                conexion cc = new conexion();
-                Connection cn = cc.conectar();
-                String sql = "insert into usuarios values(?,?,?,?,?)";
-                PreparedStatement psd = cn.prepareStatement(sql);
-                psd.setString(1, cedula);
-                psd.setString(2, apellido);
-                psd.setString(3, nombre);
-                psd.setString(4, cargo);
-                psd.setString(5, clave);
-                psd.executeUpdate();
-                int n = psd.executeUpdate();
-                if (n > 0) {
-                    JOptionPane.showMessageDialog(null, "Se inserto correctamente");
+            try {
+                if (esCedula() == false) {
+                    JOptionPane.showMessageDialog(null, "Ingrese una cedula valida");
+                } else {
+                    String cedula = jtxtCedula.getText();
+                    String apellido = jtxtApellido.getText().toUpperCase();
+                    String nombre = jtxtNombre.getText().toUpperCase();
+                    String clave = String.valueOf(jtxtContraseña.getText());
+                    String cargo = jcbxCargo.getSelectedItem().toString();
+                    conexion cc = new conexion();
+                    Connection cn = cc.conectar();
+                    String sql = "insert into usuarios values(?,?,?,?,?)";
+                    PreparedStatement psd = cn.prepareStatement(sql);
+                    psd.setString(1, cedula);
+                    psd.setString(2, apellido);
+                    psd.setString(3, nombre);
+                    psd.setString(4, cargo);
+                    psd.setString(5, clave);
+                    int n = psd.executeUpdate();
+                    if (n > 0) {
+                        JOptionPane.showMessageDialog(null, "Se inserto correctamente");
+                    }
                 }
 
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showConfirmDialog(null, ex);
             }
         }
+
     }
 
     private void modificarUsuario() {
         try {
             String cedula = jtxtCedula.getText();
-            String apellido = jtxtApellido.getText();
-            String nombre = jtxtNombre.getText();
-            String clave = jtxtContraseña.getText();
+            String apellido = jtxtApellido.getText().toUpperCase();
+            String nombre = jtxtNombre.getText().toUpperCase();
+            String clave = String.valueOf(jtxtContraseña.getPassword());
             String cargo = jcbxCargo.getSelectedItem().toString();
             conexion cc = new conexion();
             Connection cn = cc.conectar();
-            String sql = "update usuarios set NOM_USU='" + nombre + "',APE_USU='" + apellido + "',PER_USU='" + cargo + "',CLA_USU='" + clave
-                    + "' where CED_USU='" + cedula + "';";
+            String sql = "update usuarios set NOM_USU='" + nombre + "',APE_USU='" + apellido + "',PER_USU='" + cargo + "' where CED_USU='" + cedula + "';";
             PreparedStatement pst = cn.prepareStatement(sql);
             int n = pst.executeUpdate(sql);
             bloquearBotones();
@@ -219,6 +226,7 @@ public class IntUsuarios extends javax.swing.JFrame {
     private void cargaDatosModificar() {
         desbloquearTextos();
         this.jtxtCedula.setEnabled(false);
+        this.jtxtContraseña.setEnabled(false);
         desbloquearBotonesModificar();
         int fila = this.jtblUsuarios.getSelectedRow();
         if (fila != -1) {
@@ -226,8 +234,7 @@ public class IntUsuarios extends javax.swing.JFrame {
             this.jtxtNombre.setText(jtblUsuarios.getValueAt(fila, 2).toString());
             this.jtxtApellido.setText(jtblUsuarios.getValueAt(fila, 1).toString());
             this.jcbxCargo.setSelectedItem(jtblUsuarios.getValueAt(fila, 3));
-            this.jtxtContraseña.setText(jtblUsuarios.getValueAt(fila, 4).toString());
-
+            this.jtxtContraseña.setText("OCULTA");
         }
     }
 
@@ -238,6 +245,31 @@ public class IntUsuarios extends javax.swing.JFrame {
         jtxtContraseña.setText("");
     }
 
+    private boolean esCedula() {
+        boolean cedulaCorrecta;
+        try {
+            String cedula = jtxtCedula.getText();
+            if (cedula.length() == 10) {
+                // Coeficientes de validación cédula
+                // El decimo digito se lo considera dígito verificador
+                int[] coefValCedula = {2, 1, 2, 1, 2, 1, 2, 1, 2};
+                int verificador = Integer.parseInt(cedula.substring(9, 10));
+                int suma = 0;
+                int digito;
+                for (int i = 0; i < (cedula.length() - 1); i++) {
+                    digito = Integer.parseInt(cedula.substring(i, i + 1)) * coefValCedula[i];
+                    suma += ((digito % 10) + (digito / 10));
+                }
+                cedulaCorrecta = ((suma % 10 == 0 && verificador == 0) || (10 - suma % 10 == verificador));
+            } else {
+                cedulaCorrecta = false;
+            }
+        } catch (Exception e) {
+            cedulaCorrecta = false;
+        }
+        return cedulaCorrecta;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -245,7 +277,6 @@ public class IntUsuarios extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jtxtNombre = new javax.swing.JTextField();
         jtxtApellido = new javax.swing.JTextField();
-        jtxtContraseña = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jcbxCargo = new javax.swing.JComboBox<>();
@@ -253,6 +284,7 @@ public class IntUsuarios extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jtxtCedula = new javax.swing.JTextField();
+        jtxtContraseña = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jbtnNuevo = new javax.swing.JButton();
         jbtnGuardar = new javax.swing.JButton();
@@ -266,7 +298,19 @@ public class IntUsuarios extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jtxtBuscarCedula = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jtxtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtNombreKeyTyped(evt);
+            }
+        });
+
+        jtxtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtApellidoKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Cédula");
 
@@ -280,6 +324,18 @@ public class IntUsuarios extends javax.swing.JFrame {
 
         jLabel5.setText("Contraseña");
 
+        jtxtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtCedulaKeyTyped(evt);
+            }
+        });
+
+        jtxtContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtContraseñaKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -288,22 +344,21 @@ public class IntUsuarios extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(25, 25, 25))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(34, 34, 34)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(25, 25, 25))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(34, 34, 34)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jcbxCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(7, 7, 7)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jcbxCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                            .addComponent(jtxtContraseña))
                         .addGap(1, 1, 1))
                     .addComponent(jLabel2)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -339,7 +394,7 @@ public class IntUsuarios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jtxtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jbtnNuevo.setText("NUEVO");
@@ -416,17 +471,13 @@ public class IntUsuarios extends javax.swing.JFrame {
                 .addComponent(jbtnSalir))
         );
 
-        jtblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
+        jtblUsuarios = new javax.swing.JTable(){
+            public boolean isCellEditable(int a, int b){
+                return false;
             }
-        ));
+        };
+        jtblUsuarios.getTableHeader().setResizingAllowed(false);
+        jtblUsuarios.getTableHeader().setReorderingAllowed(false);
         jtblUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtblUsuariosMouseClicked(evt);
@@ -455,8 +506,8 @@ public class IntUsuarios extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jtxtBuscarCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -543,6 +594,36 @@ public class IntUsuarios extends javax.swing.JFrame {
         limpiarCampos();
     }//GEN-LAST:event_jbtnSalirActionPerformed
 
+    private void jtxtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtCedulaKeyTyped
+        char control = evt.getKeyChar();
+        if (!(Character.isDigit(control))) {
+            evt.consume();
+        } else if (this.jtxtCedula.getText().length() == 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtxtCedulaKeyTyped
+
+    private void jtxtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNombreKeyTyped
+        char control = evt.getKeyChar();
+        if (!(Character.isLetter(control))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtxtNombreKeyTyped
+
+    private void jtxtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtApellidoKeyTyped
+        char control = evt.getKeyChar();
+        if (!(Character.isLetter(control))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtxtApellidoKeyTyped
+
+    private void jtxtContraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtContraseñaKeyTyped
+        char control = evt.getKeyChar();
+        if (!(Character.isLetter(control)) && !(Character.isDigit(control))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtxtContraseñaKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -568,6 +649,9 @@ public class IntUsuarios extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(IntUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -600,7 +684,7 @@ public class IntUsuarios extends javax.swing.JFrame {
     private javax.swing.JTextField jtxtApellido;
     private javax.swing.JTextField jtxtBuscarCedula;
     private javax.swing.JTextField jtxtCedula;
-    private javax.swing.JTextField jtxtContraseña;
+    private javax.swing.JPasswordField jtxtContraseña;
     private javax.swing.JTextField jtxtNombre;
     // End of variables declaration//GEN-END:variables
 

@@ -14,7 +14,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JRViewer;
 
 
-public class IntReporte extends javax.swing.JInternalFrame {
+public class IntReporte extends javax.swing.JFrame {
 
     /**
      * Creates new form reportecurso
@@ -102,7 +102,7 @@ public class IntReporte extends javax.swing.JInternalFrame {
             Connection cn = cc.conectar();
             Map parametro = new HashMap();
             parametro.put("curso", txtCurso.getText());
-            JasperReport reporte = JasperCompileManager.compileReport("C://reportes/maestro.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport("d://reportes/reporteFiltrado.jrxml");
             JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
             JRViewer jRViewer = new JRViewer(imprimir);
             pReporte.removeAll();
