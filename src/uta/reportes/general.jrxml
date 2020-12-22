@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ddfefd82-ff37-45c9-8cbe-1916cd0bd317">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     estudiantes.`CED_EST` AS estudiantes_CED_EST,
+     estudiantes.`APE_EST` AS estudiantes_APE_EST,
+     estudiantes.`NOM_EST` AS estudiantes_NOM_EST,
+     estudiantes.`TELF_EST` AS estudiantes_TELF_EST,
+     estudiantes.`SEX_EST` AS estudiantes_SEX_EST,
+     estudiantes.`EST_CIV_EST` AS estudiantes_EST_CIV_EST,
+     estudiantes.`PRO_EST` AS estudiantes_PRO_EST,
+     curso.`NOM_CUR` AS curso_NOM_CUR
+FROM
+     `curso` curso INNER JOIN `estudiantes` estudiantes ON curso.`ID_CUR` = estudiantes.`ID_CUR_PER`]]>
+	</queryString>
+	<field name="estudiantes_CED_EST" class="java.lang.String"/>
+	<field name="estudiantes_APE_EST" class="java.lang.String"/>
+	<field name="estudiantes_NOM_EST" class="java.lang.String"/>
+	<field name="estudiantes_TELF_EST" class="java.lang.String"/>
+	<field name="estudiantes_SEX_EST" class="java.lang.String"/>
+	<field name="estudiantes_EST_CIV_EST" class="java.lang.String"/>
+	<field name="estudiantes_PRO_EST" class="java.lang.String"/>
+	<field name="curso_NOM_CUR" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement x="62" y="0" width="420" height="62" uuid="aff80562-37f8-4cbb-a43e-e33f7cbb01b7"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[REPORTE GENERAL ESTUDIANTES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="21" y="0" width="100" height="20" uuid="c4ea16ca-dea6-4c52-9db7-b52c656c9bb0"/>
+				<text><![CDATA[CEDULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="0" width="100" height="20" uuid="4c556134-b438-4532-a6d4-4d64bda1ce7a"/>
+				<text><![CDATA[APELLIDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="0" width="100" height="20" uuid="67d702ec-b449-4342-bd6b-7fd4d992996b"/>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="0" width="100" height="20" uuid="3ad817e1-73c0-4d84-99a8-c18ce55ba663"/>
+				<text><![CDATA[CURSO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="21" y="0" width="100" height="20" uuid="31e1ee3d-de27-4622-a988-e2df6bb87202"/>
+				<textFieldExpression><![CDATA[$F{estudiantes_CED_EST}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="121" y="0" width="100" height="20" uuid="c8f13ed3-b6cb-423b-bf74-de97563756c5"/>
+				<textFieldExpression><![CDATA[$F{estudiantes_APE_EST}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="0" width="100" height="20" uuid="a5ff31c6-4fa0-4c75-bb8c-4d8be8e04a44"/>
+				<textFieldExpression><![CDATA[$F{estudiantes_NOM_EST}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="321" y="0" width="100" height="20" uuid="1b6d8f01-32f2-48fc-8424-c2ca0cf72908"/>
+				<textFieldExpression><![CDATA[$F{curso_NOM_CUR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

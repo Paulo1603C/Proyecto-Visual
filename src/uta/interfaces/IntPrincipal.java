@@ -8,10 +8,11 @@ public class IntPrincipal extends javax.swing.JFrame {
 
     
     IntEstudiantes estudiantes = new IntEstudiantes();
-    IntReporteCursos reportes=new IntReporteCursos();
+    IntReporteCursos repoCursos=new IntReporteCursos();
     IntRepoProvincias provincias=new IntRepoProvincias();
     IntUsuarios usuarios=new IntUsuarios();
     IntCursos cursos =new IntCursos();
+    IntRepoGeneral general=new IntRepoGeneral();
     
     public IntPrincipal() {
         initComponents();
@@ -36,10 +37,18 @@ public class IntPrincipal extends javax.swing.JFrame {
     }
     
     public void abrirIntReportes(){
-        if(!(reportes.isVisible())){
-            dkInterfaces.add(reportes);
-            reportes.setVisible(true);
-            reportes.setClosable(true);
+        if(!(repoCursos.isVisible())){
+            dkInterfaces.add(repoCursos);
+            repoCursos.setVisible(true);
+            repoCursos.setClosable(true);
+        }
+    }
+    
+     public void abrirIntRepoGeneral(){
+        if(!(general.isVisible())){
+            dkInterfaces.add(general);
+            general.setVisible(true);
+            general.setClosable(true);
         }
     }
     
@@ -153,6 +162,11 @@ public class IntPrincipal extends javax.swing.JFrame {
         mReportes.add(mIntProvincias);
 
         mIntGeneral.setText("General");
+        mIntGeneral.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mIntGeneralActionPerformed(evt);
+            }
+        });
         mReportes.add(mIntGeneral);
 
         jMenuBar1.add(mReportes);
@@ -229,6 +243,10 @@ public class IntPrincipal extends javax.swing.JFrame {
     private void mIntCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntCursosActionPerformed
         abrirIntCursos();
     }//GEN-LAST:event_mIntCursosActionPerformed
+
+    private void mIntGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntGeneralActionPerformed
+        abrirIntRepoGeneral();
+    }//GEN-LAST:event_mIntGeneralActionPerformed
 
     /**
      * @param args the command line arguments
