@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class IntPrincipal extends javax.swing.JFrame {
-
     
     IntEstudiantes estudiantes = new IntEstudiantes();
     IntReporteCursos repoCursos=new IntReporteCursos();

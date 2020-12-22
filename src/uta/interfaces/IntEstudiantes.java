@@ -5,10 +5,12 @@
  */
 package uta.interfaces;
 
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +28,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
      */
     
     public IntEstudiantes() {
+      
         initComponents();
         bloquearBts();
         bloquearTxts();
@@ -89,7 +92,9 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             pst.setString(5, sexo);
             pst.setString(6, estadoCivil);
             pst.setString(7, provincia.toUpperCase());
-            pst.setString(8, "CU01");
+            String id=cbCurso.getSelectedItem().toString();
+            System.out.println(id);
+            pst.setString(8, idCursoRegistro(id));
             pst.executeUpdate();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -112,7 +117,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     }
 
     DefaultTableModel modeloDatos;
-
+    
     public final void cargarEstadoCivil() {
         try {
             conexion cc = new conexion();
@@ -129,6 +134,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         }
     }
 
+    ArrayList<curso> nomIdCurso;;
     public final void cargarCursos() {
         try {
             conexion cc = new conexion();
@@ -137,7 +143,9 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             sql = "select * from curso";
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
+             nomIdCurso= new ArrayList<curso>();
             while (rs.next()) {
+                nomIdCurso.add(new curso(rs.getString("ID_CUR"),rs.getString("NOM_CUR")));
                 cbCurso.addItem(rs.getString("NOM_CUR"));
             }
         } catch (Exception ex) {
@@ -148,10 +156,10 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     public void cargarDatos(String cedula) {
         try {
             String[] titulosTab = {
-                "Cédula", "Apellido", "Nombre", "Teléfono", "Género", "Estado civil", "Provincia"
+                "Cédula", "Apellido", "Nombre", "Teléfono", "Género", "Estado civil", "Provincia","Curso"
             };
             modeloDatos = new DefaultTableModel(null, titulosTab);
-            String registros[] = new String[7];
+            String registros[] = new String[8];
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             String sql = "";
@@ -171,12 +179,35 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
                 registros[4] = rs.getString("SEX_EST");
                 registros[5] = rs.getString("EST_CIV_EST");
                 registros[6] = rs.getString("PRO_EST");
+                registros[7] = nombreCursoTabla(rs.getString("ID_CUR_PER"));
                 modeloDatos.addRow(registros);
             }
             tbRegistros.setModel(modeloDatos);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Sucedio algo en la carga de datos");
         }
+    }
+    
+    public String nombreCursoTabla(String idCurso){
+        String nombre="";
+        for (int i = 0; i < nomIdCurso.size(); i++) {
+            if(nomIdCurso.get(i).id.equals(idCurso) ){
+                nombre=nomIdCurso.get(i).nombre;
+                return nombre;
+            }
+        }
+        return "ERROR";
+    }
+    
+    public String idCursoRegistro(String nomCurso){
+        String idCurso="";
+        for (int i = 0; i < nomIdCurso.size(); i++) {
+            if(nomIdCurso.get(i).nombre.equals(nomCurso) ){
+                idCurso=nomIdCurso.get(i).id;
+                return idCurso;
+            }
+        }
+        return "CU01";
     }
 
     public void loadToModified() {
@@ -228,7 +259,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         txtTelefono.setEnabled(true);
         cbEstadoCivil.setEnabled(true);
         cbProvincias.setEnabled(true);
-        cbCurso.setEnabled(false);
+        cbCurso.setEnabled(true);
         rbFemenino.setEnabled(true);
         rbMasculino.setEnabled(true);
     }
@@ -616,23 +647,25 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             panelImpresionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImpresionLayout.createSequentialGroup()
                 .addGap(89, 89, 89)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1)
+                .addGap(18, 18, 18)
                 .addGroup(panelImpresionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49))
         );
         panelImpresionLayout.setVerticalGroup(
             panelImpresionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImpresionLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
                 .addGroup(panelImpresionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImpresionLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelImpresionLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
@@ -710,6 +743,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
 
     private void btEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEliminarActionPerformed
         extensionEliminar();
+        btNuevo.setEnabled(true);
     }//GEN-LAST:event_btEliminarActionPerformed
 
     /**
