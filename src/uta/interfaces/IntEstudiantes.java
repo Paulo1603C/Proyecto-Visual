@@ -290,6 +290,36 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         bgSexo.clearSelection();
     }
 
+    public void extensionEliminar() {
+        int op = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar?", "Confirmar salida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (op == 0) {
+            eliminarEstudiante();
+            tbRegistros.clearSelection();
+            bloquearBts();
+            bloquearTxts();
+            limpiarCampos();
+            cargarDatos("");
+        } else {
+            tbRegistros.clearSelection();
+            bloquearBts();
+            bloquearTxts();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(null, "No se elimino");
+        }
+    }
+    
+    public void eliminarEstudiante(){
+       try {
+            String sqlDelete = "delete from estudiantes where CED_EST='" + txtCedula.getText()+"'";
+            conexion cc = new conexion();
+            Connection cn = cc.conectar();
+            PreparedStatement pt = cn.prepareStatement(sqlDelete);
+             pt.executeUpdate();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No se puede eliminar este curso porque tiene estudiantes");
+        }
+    }
+    
     public boolean esCedula() {
         boolean cedulaCorrecta;
         try {
@@ -485,6 +515,11 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         });
 
         btEliminar.setText("Eliminar");
+        btEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEliminarActionPerformed(evt);
+            }
+        });
 
         btCancelar.setText("Cancelar");
         btCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -651,7 +686,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         bloquearBts();
         bloquearTxts();
         limpiarCampos();
-        tbRegistros.setCellSelectionEnabled(false);
+        tbRegistros.clearSelection();
         btNuevo.setEnabled(true);
     }//GEN-LAST:event_btCancelarActionPerformed
 
@@ -662,6 +697,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     private void tbRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRegistrosMouseClicked
         loadToModified();
         btCancelar.setEnabled(true);
+        btNuevo.setEnabled(false);
     }//GEN-LAST:event_tbRegistrosMouseClicked
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
@@ -671,6 +707,10 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void btEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEliminarActionPerformed
+        extensionEliminar();
+    }//GEN-LAST:event_btEliminarActionPerformed
 
     /**
      * @param args the command line arguments

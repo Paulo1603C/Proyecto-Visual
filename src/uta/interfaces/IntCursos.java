@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ASUS
  */
-public class IntCursos extends javax.swing.JFrame {
+public class IntCursos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form IntCursos
@@ -205,7 +205,7 @@ public class IntCursos extends javax.swing.JFrame {
     
     public void eliminarCurso(){
        try {
-            String sqlDelete = "delete from curso where ID_EST=" + txtID.getText();
+            String sqlDelete = "delete from curso where ID_CUR='" + txtID.getText()+"'";
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             PreparedStatement pt = cn.prepareStatement(sqlDelete);
@@ -246,7 +246,7 @@ public class IntCursos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombre");
 
@@ -361,6 +361,11 @@ public class IntCursos extends javax.swing.JFrame {
         });
 
         btSalir.setText("Salir");
+        btSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pBotonesLayout = new javax.swing.GroupLayout(pBotones);
         pBotones.setLayout(pBotonesLayout);
@@ -532,6 +537,10 @@ public class IntCursos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Solo letras");
         }
     }//GEN-LAST:event_txtDescripcionKeyTyped
+
+    private void btSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btSalirActionPerformed
 
     /**
      * @param args the command line arguments

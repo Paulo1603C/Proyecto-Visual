@@ -192,6 +192,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
         int validacion = JOptionPane.showConfirmDialog(null, "Seguro que desea modificar este registro", "Modificar registro", JOptionPane.YES_NO_OPTION);
         if (validacion == JOptionPane.YES_OPTION) {
             modificarUsuario();
+            jtblUsuarios.clearSelection();
         }
     }
 
@@ -575,6 +576,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
     private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
         bloquearBotones();
         limpiarCampos();
+        jtblUsuarios.clearSelection();
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void jtblUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblUsuariosMouseClicked

@@ -9,6 +9,9 @@ public class IntPrincipal extends javax.swing.JFrame {
     
     IntEstudiantes estudiantes = new IntEstudiantes();
     IntReporteCursos reportes=new IntReporteCursos();
+    IntRepoProvincias provincias=new IntRepoProvincias();
+    IntUsuarios usuarios=new IntUsuarios();
+    IntCursos cursos =new IntCursos();
     
     public IntPrincipal() {
         initComponents();
@@ -39,7 +42,32 @@ public class IntPrincipal extends javax.swing.JFrame {
             reportes.setClosable(true);
         }
     }
+    
+    public void abrirIntRepoProvincias() {
+       
+        if (!(provincias.isVisible())) {
+            dkInterfaces.add(provincias);
+            provincias.setVisible(true);
+            provincias.setClosable(true);
+        }
+    }
 
+    public void abrirIntUsuarios() {
+       
+        if (!(usuarios.isVisible())) {
+            dkInterfaces.add(usuarios);
+            usuarios.setVisible(true);
+            usuarios.setClosable(true);
+        }
+    }
+    
+    public void abrirIntCursos() {
+        if (!(cursos.isVisible())) {
+            dkInterfaces.add(cursos);
+            cursos.setVisible(true);
+            cursos.setClosable(true);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,9 +81,13 @@ public class IntPrincipal extends javax.swing.JFrame {
         dkInterfaces = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         mInterfaces = new javax.swing.JMenu();
-        miEstudiantes = new javax.swing.JMenuItem();
+        mIntEstudiantes = new javax.swing.JMenuItem();
+        mIntUsuarios = new javax.swing.JMenuItem();
+        mIntCursos = new javax.swing.JMenuItem();
         mReportes = new javax.swing.JMenu();
-        miGeneral = new javax.swing.JMenuItem();
+        mIntRepoCursos = new javax.swing.JMenuItem();
+        mIntProvincias = new javax.swing.JMenuItem();
+        mIntGeneral = new javax.swing.JMenuItem();
         mSesion = new javax.swing.JMenu();
         miLogout = new javax.swing.JMenuItem();
         miSalir = new javax.swing.JMenuItem();
@@ -75,26 +107,53 @@ public class IntPrincipal extends javax.swing.JFrame {
 
         mInterfaces.setText("Interfaces");
 
-        miEstudiantes.setText("Estudiantes");
-        miEstudiantes.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        miEstudiantes.addActionListener(new java.awt.event.ActionListener() {
+        mIntEstudiantes.setText("Estudiantes");
+        mIntEstudiantes.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        mIntEstudiantes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miEstudiantesActionPerformed(evt);
+                mIntEstudiantesActionPerformed(evt);
             }
         });
-        mInterfaces.add(miEstudiantes);
+        mInterfaces.add(mIntEstudiantes);
+
+        mIntUsuarios.setText("Usuarios");
+        mIntUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mIntUsuariosActionPerformed(evt);
+            }
+        });
+        mInterfaces.add(mIntUsuarios);
+
+        mIntCursos.setText("Cursos");
+        mIntCursos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mIntCursosActionPerformed(evt);
+            }
+        });
+        mInterfaces.add(mIntCursos);
 
         jMenuBar1.add(mInterfaces);
 
         mReportes.setText("Reportes");
 
-        miGeneral.setText("General");
-        miGeneral.addActionListener(new java.awt.event.ActionListener() {
+        mIntRepoCursos.setText("Cursos");
+        mIntRepoCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miGeneralActionPerformed(evt);
+                mIntRepoCursosActionPerformed(evt);
             }
         });
-        mReportes.add(miGeneral);
+        mReportes.add(mIntRepoCursos);
+
+        mIntProvincias.setText("Provincias");
+        mIntProvincias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mIntProvinciasActionPerformed(evt);
+            }
+        });
+        mReportes.add(mIntProvincias);
+
+        mIntGeneral.setText("General");
+        mReportes.add(mIntGeneral);
 
         jMenuBar1.add(mReportes);
 
@@ -133,15 +192,15 @@ public class IntPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dkInterfaces)
+            .addComponent(dkInterfaces, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void miEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEstudiantesActionPerformed
+    private void mIntEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntEstudiantesActionPerformed
         abrirIntEstudiantes();
-    }//GEN-LAST:event_miEstudiantesActionPerformed
+    }//GEN-LAST:event_mIntEstudiantesActionPerformed
 
     private void mSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSesionActionPerformed
 
@@ -155,9 +214,21 @@ public class IntPrincipal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_miSalirActionPerformed
 
-    private void miGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miGeneralActionPerformed
+    private void mIntRepoCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntRepoCursosActionPerformed
         abrirIntReportes();
-    }//GEN-LAST:event_miGeneralActionPerformed
+    }//GEN-LAST:event_mIntRepoCursosActionPerformed
+
+    private void mIntProvinciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntProvinciasActionPerformed
+        abrirIntRepoProvincias();
+    }//GEN-LAST:event_mIntProvinciasActionPerformed
+
+    private void mIntUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntUsuariosActionPerformed
+        abrirIntUsuarios();
+    }//GEN-LAST:event_mIntUsuariosActionPerformed
+
+    private void mIntCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIntCursosActionPerformed
+        abrirIntCursos();
+    }//GEN-LAST:event_mIntCursosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,11 +268,15 @@ public class IntPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkInterfaces;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem mIntCursos;
+    private javax.swing.JMenuItem mIntEstudiantes;
+    private javax.swing.JMenuItem mIntGeneral;
+    private javax.swing.JMenuItem mIntProvincias;
+    private javax.swing.JMenuItem mIntRepoCursos;
+    private javax.swing.JMenuItem mIntUsuarios;
     private javax.swing.JMenu mInterfaces;
     private javax.swing.JMenu mReportes;
     private javax.swing.JMenu mSesion;
-    private javax.swing.JMenuItem miEstudiantes;
-    private javax.swing.JMenuItem miGeneral;
     private javax.swing.JMenuItem miLogout;
     private javax.swing.JMenuItem miSalir;
     // End of variables declaration//GEN-END:variables
