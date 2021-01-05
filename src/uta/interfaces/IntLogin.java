@@ -1,31 +1,110 @@
-
 package uta.interfaces;
 
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 
 public class IntLogin extends javax.swing.JFrame {
 
-    
     public IntLogin() {
         initComponents();
+        //Añadido el logo 
+        ImageIcon img = new ImageIcon("src/uta/icon/Logo_LogIn.png");
+        Icon icono = new ImageIcon(img.getImage().getScaledInstance(lbIcono.getWidth(), lbIcono.getHeight(), Image.SCALE_DEFAULT));
+        lbIcono.setIcon(icono);
+        this.repaint();
     }
+    
 
+    int k = 0, suma1 = 0, nd = 0, nc = 0, ns = 0, nm = 0, nf = 0, np = 0;
+    int n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, acum = 0, dec, aux;
+    String msk;
+
+    public void validarCedula(String ced) {
+        //do {
+        msk = "ok";
+        if (ced.length() < 10 || ced.length() > 10) {
+            msk = "ERROR ==> *** N. Cédula Incorrecta ***";
+            JOptionPane.showMessageDialog(null, msk);
+        } else {
+
+            n0 = (ced.charAt(0)) - 48;
+            n1 = (ced.charAt(1)) - 48;
+            n2 = (ced.charAt(2)) - 48;
+            n3 = (ced.charAt(3)) - 48;
+            n4 = (ced.charAt(4)) - 48;
+            n5 = (ced.charAt(5)) - 48;
+            n6 = (ced.charAt(6)) - 48;
+            n7 = (ced.charAt(7)) - 48;
+            n8 = (ced.charAt(8)) - 48;
+            n9 = (ced.charAt(9)) - 48;
+            aux = (n0 * 10) + n1;
+            if (aux > 24) {
+                msk = "ERROR ==> *** N. Cédula Incorrecta ***";
+                JOptionPane.showMessageDialog(null, msk);
+            } else {
+                n0 = n0 * 2;
+                n2 = n2 * 2;
+                n4 = n4 * 2;
+                n6 = n6 * 2;
+                n8 = n8 * 2;
+
+                if (n0 >= 9) {
+                    n0 = n0 - 9;
+                } else if (n2 >= 9) {
+                    n2 = n2 - 9;
+                } else if (n4 >= 9) {
+                    n4 = n4 - 9;
+                } else if (n6 >= 9) {
+                    n6 = n6 - 9;
+                } else if (n8 >= 9) {
+                    n8 = n8 - 9;
+                }
+
+                acum = n0 + n1 + +n2 + n3 + n4 + n5 + n6 + n7 + n8;
+
+                if (acum <= 9) {
+
+                    dec = 10 - acum;
+
+                } else {
+                    dec = (int) acum / 10;
+                    dec = (dec * 10) + 10;
+                    dec = dec - acum;
+                }
+
+                if (dec == n9) {
+                    msk = "ok";
+                } else {
+                    msk = "ERROR ==> *** N. Cédula Incorrecta ***";
+                    JOptionPane.showMessageDialog(null, msk);
+                }
+            }
+        }
+        //} while (!("ERROR ==> *** N. Cédula Incorrecta ***".equals(msk)));
+    }
     
 
     public void cargarUsuario() {
         try {
             String[] usuario = new String[3];
-            if (txtUsuario.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debes colocar tu usuario");
-                txtUsuario.requestFocus();
-            } else if (pfClave.getPassword() == null) {
-                JOptionPane.showMessageDialog(null, "Debes colocar la contraseña");
-                pfClave.requestFocus();
-            }
+            if (txtUsuario.getText().isEmpty() || pfClave.getPassword().length == 0) {
+                if(txtUsuario.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Complete los campos requeridos");
+                   txtUsuario.requestFocus(); 
+                }else if(pfClave.getPassword().length == 0){
+                    JOptionPane.showMessageDialog(null, "Complete los campos requeridos");
+                    pfClave.requestFocus();
+                }
+            } else {
+                //Validacion de cedula;
+                validarCedula(txtUsuario.getText());
+            } 
+            
             String contra = String.valueOf(pfClave.getPassword());
             conexion cc = new conexion();
             Connection cn = cc.conectar();
@@ -51,7 +130,7 @@ public class IntLogin extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "La contraseña es incorrecta");
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            //JOptionPane.showMessageDialog(null, "Error en al conectar a la Base de Datos");
         }
     }
 
@@ -75,14 +154,20 @@ public class IntLogin extends javax.swing.JFrame {
 
         jLabel2.setText("Clave");
 
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUsuarioKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout pCamposLayout = new javax.swing.GroupLayout(pCampos);
         pCampos.setLayout(pCamposLayout);
         pCamposLayout.setHorizontalGroup(
             pCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pCamposLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(lbIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addGap(36, 36, 36)
+                .addComponent(lbIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addGroup(pCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -93,10 +178,10 @@ public class IntLogin extends javax.swing.JFrame {
         pCamposLayout.setVerticalGroup(
             pCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pCamposLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
                 .addGroup(pCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pCamposLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -104,9 +189,9 @@ public class IntLogin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pCamposLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(lbIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(lbIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         btIngresar.setText("Ingresar");
@@ -160,7 +245,7 @@ public class IntLogin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(pCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -169,6 +254,16 @@ public class IntLogin extends javax.swing.JFrame {
     private void btIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarActionPerformed
         cargarUsuario();
     }//GEN-LAST:event_btIngresarActionPerformed
+
+    private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
+        char c;
+        c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Ingrese solo numeros");
+        }
+    }//GEN-LAST:event_txtUsuarioKeyTyped
 
     /**
      * @param args the command line arguments

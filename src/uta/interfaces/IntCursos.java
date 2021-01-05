@@ -79,11 +79,12 @@ public class IntCursos extends javax.swing.JInternalFrame {
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             String sql = "";
-            if (txtBuscar.getText().isEmpty()) {
+            /*if (txtBuscar.getText().isEmpty()) {
                 sql = "select * from curso where NOM_CUR LIKE'%" + curso + "%'";
             } else {
                 sql = "select * from curso where NOM_CUR ='" + curso + "'";
-            }
+            }*/
+            sql = "select * from curso where NOM_CUR like '%" + curso + "%';";
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -157,6 +158,7 @@ public class IntCursos extends javax.swing.JInternalFrame {
         if (op == 0) {
             modificarCurso();
             tbCursos.clearSelection();
+            btNuevo.setEnabled(true);
             bloquearBotones();
             bloquearCampos();
             limpiarCampos();
@@ -174,22 +176,30 @@ public class IntCursos extends javax.swing.JInternalFrame {
         try {
             conexion cc = new conexion();
             Connection cn = cc.conectar();
-            String sqlUpdate = "update curso set NOM_CUR='" + txtNombre.getText()
+            /*String sqlUpdate = "update curso set NOM_CUR='" + txtNombre.getText()
                     + "',NIV_CUR='" + txtNivel.getText()
                     + "',OBS_CUR='" + txtDescripcion.getText()
-                    + "' where ID_CUR='" + txtID.getText() + "'";
-            PreparedStatement pst = cn.prepareStatement(sqlUpdate);
-            pst.executeUpdate();
+                    + "' where ID_CUR='" + txtID.getText() + "'";*/
+            String sqlUp = "update curso set ID_CUR=?, NOM_CUR=?, NIV_CUR=?, OBS_CUR=? where ID_CUR = " + txtID.getText();
+            PreparedStatement pt = cn.prepareStatement(sqlUp);
+            pt.setString(1, txtID.getText());
+            pt.setString(2, txtNombre.getText());
+            pt.setString(3, txtNivel.getText());
+            pt.setString(4, txtDescripcion.getText());
+            
+            pt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Modificado con exito");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "No se pudo modificar");
         }
     }
-    
+
     public void extensionEliminar() {
         int op = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar?", "Confirmar salida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (op == 0) {
             eliminarCurso();
             tbCursos.clearSelection();
+            btNuevo.setEnabled(true);
             bloquearBotones();
             bloquearCampos();
             limpiarCampos();
@@ -202,14 +212,14 @@ public class IntCursos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "No se elimino");
         }
     }
-    
-    public void eliminarCurso(){
-       try {
-            String sqlDelete = "delete from curso where ID_CUR='" + txtID.getText()+"'";
+
+    public void eliminarCurso() {
+        try {
+            String sqlDelete = "delete from curso where ID_CUR='" + txtID.getText() + "'";
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             PreparedStatement pt = cn.prepareStatement(sqlDelete);
-             pt.executeUpdate();
+            pt.executeUpdate();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "No se puede eliminar este curso porque tiene estudiantes");
         }
@@ -245,8 +255,6 @@ public class IntCursos extends javax.swing.JInternalFrame {
         tbCursos = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombre");
 
@@ -420,6 +428,12 @@ public class IntCursos extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Buscar por nombre");
 
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout pResumenLayout = new javax.swing.GroupLayout(pResumen);
         pResumen.setLayout(pResumenLayout);
         pResumenLayout.setHorizontalGroup(
@@ -497,7 +511,7 @@ public class IntCursos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        
+
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btModificarActionPerformed
@@ -521,7 +535,7 @@ public class IntCursos extends javax.swing.JInternalFrame {
     private void txtNivelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNivelKeyTyped
         char validar;
         validar = evt.getKeyChar();
-        if( Character.isLetter(validar) ){
+        if (Character.isLetter(validar)) {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(null, "Solo número");
@@ -541,6 +555,10 @@ public class IntCursos extends javax.swing.JInternalFrame {
     private void btSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_btSalirActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        cargarCursos(txtBuscar.getText());
+    }//GEN-LAST:event_txtBuscarKeyReleased
 
     /**
      * @param args the command line arguments

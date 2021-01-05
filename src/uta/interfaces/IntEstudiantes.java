@@ -163,12 +163,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             String sql = "";
-            if (txtBuscar.getText().isEmpty()) {
-                sql = "select * from estudiantes where CED_EST LIKE'%" + cedula + "%'";
-            } else {
-                sql = "select * from estudiantes where CED_EST ='" + cedula + "'";
-
-            }
+            sql = "select * from estudiantes where CED_EST like'%" + cedula + "%'order by CED_EST desc";
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -300,6 +295,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         if (op == 0) {
             modificarEstudiante();
             tbRegistros.setCellSelectionEnabled(false);
+            btNuevo.setEnabled(true);
             bloquearBts();
             bloquearTxts();
             limpiarCampos();
@@ -326,6 +322,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         if (op == 0) {
             eliminarEstudiante();
             tbRegistros.clearSelection();
+            tbRegistros.setCellSelectionEnabled(false);
             bloquearBts();
             bloquearTxts();
             limpiarCampos();
@@ -427,7 +424,31 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Cédula");
 
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyTyped(evt);
+            }
+        });
+
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyTyped(evt);
+            }
+        });
+
         jLabel4.setText("Teléfono");
+
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
+            }
+        });
 
         jLabel5.setText("Ciudad");
 
@@ -745,6 +766,46 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         extensionEliminar();
         btNuevo.setEnabled(true);
     }//GEN-LAST:event_btEliminarActionPerformed
+
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
+        char c;
+        c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Ingrese solo numeros");
+        }
+    }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        char c;
+        c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Ingrese solo numeros");
+        }
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
+        char c;
+        c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Ingrese solo letras");
+        }
+    }//GEN-LAST:event_txtApellidoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c;
+        c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Ingrese solo letras");
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
 
     /**
      * @param args the command line arguments

@@ -176,6 +176,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
             String sql = "update usuarios set NOM_USU='" + nombre + "',APE_USU='" + apellido + "',PER_USU='" + cargo + "' where CED_USU='" + cedula + "';";
             PreparedStatement pst = cn.prepareStatement(sql);
             int n = pst.executeUpdate(sql);
+            jbtnNuevo.setEnabled(true);
             bloquearBotones();
             bloquearTextos();
             limpiarCampos();
@@ -208,6 +209,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
                 PreparedStatement psd = cn.prepareStatement(sql);
                 int n = psd.executeUpdate();
                 cargarUsuarios("");
+                jbtnNuevo.setEnabled(true);
                 bloquearBotones();
                 bloquearTextos();
                 limpiarCampos();
