@@ -132,7 +132,6 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debes ingresar una contraseña");
             jtxtContraseña.requestFocus();
         } else {
-
             try {
                 if (esCedula() == false) {
                     JOptionPane.showMessageDialog(null, "Ingrese una cedula valida");
@@ -156,7 +155,6 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Se inserto correctamente");
                     }
                 }
-
             } catch (SQLException ex) {
                 JOptionPane.showConfirmDialog(null, ex);
             }

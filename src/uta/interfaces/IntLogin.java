@@ -202,6 +202,11 @@ public class IntLogin extends javax.swing.JFrame {
         });
 
         btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pBotonesLayout = new javax.swing.GroupLayout(pBotones);
         pBotones.setLayout(pBotonesLayout);
@@ -264,6 +269,10 @@ public class IntLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingrese solo numeros");
         }
     }//GEN-LAST:event_txtUsuarioKeyTyped
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -30,19 +30,20 @@ public class IntRepoProvincias extends javax.swing.JInternalFrame {
         initComponents();
         imprimirReporteProvincias();
     }
-    
+    conexion cc = new conexion();
+    Connection cn = cc.conectar();
+
     public void imprimirReporteProvincias() {
+        Map parametro = new HashMap();
         try {
-            conexion cc = new conexion();
-            Connection cn = cc.conectar();
-            Map parametro = new HashMap();
             parametro.put("", "");
-            JasperReport reporte = JasperCompileManager.compileReport("c://reportes/provincias.jrxml");
-            JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
+            JasperReport reporte = JasperCompileManager.compileReport("src\\uta\\reportes\\provincias.jrxml");
+            JasperPrint imprimir;
+            imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
             JRViewer jRViewer = new JRViewer(imprimir);
             pReporte.removeAll();
             pReporte.setLayout(new BorderLayout());
-            pReporte.add(jRViewer,BorderLayout.CENTER);
+            pReporte.add(jRViewer);
             jRViewer.setVisible(true);
             pReporte.repaint();
             pReporte.revalidate();
@@ -50,6 +51,7 @@ public class IntRepoProvincias extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,8 +62,6 @@ public class IntRepoProvincias extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         pReporte = new javax.swing.JPanel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         javax.swing.GroupLayout pReporteLayout = new javax.swing.GroupLayout(pReporte);
         pReporte.setLayout(pReporteLayout);

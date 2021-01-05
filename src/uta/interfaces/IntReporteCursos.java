@@ -1,4 +1,3 @@
-
 package uta.interfaces;
 
 import java.awt.BorderLayout;
@@ -13,7 +12,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JRViewer;
 
-
 public class IntReporteCursos extends javax.swing.JInternalFrame {
 
     /**
@@ -22,7 +20,7 @@ public class IntReporteCursos extends javax.swing.JInternalFrame {
     public IntReporteCursos() {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,22 +93,23 @@ public class IntReporteCursos extends javax.swing.JInternalFrame {
     private void btReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReporteActionPerformed
         imprimirReporte();
     }//GEN-LAST:event_btReporteActionPerformed
-    
+
     public void imprimirReporte() {
         try {
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             Map parametro = new HashMap();
             parametro.put("curso", txtCurso.getText());
-            JasperReport reporte = JasperCompileManager.compileReport("d://reportes/reporteFiltrado.jrxml");
-            JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
+            JasperReport reporte = JasperCompileManager.compileReport("src\\uta\\reportes\\reporteFiltrado.jrxml");
+            JasperPrint imprimir;
+            imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
             JRViewer jRViewer = new JRViewer(imprimir);
-            pReporte.removeAll();
+            //pReporte.removeAll();
             pReporte.setLayout(new BorderLayout());
-            pReporte.add(jRViewer,BorderLayout.CENTER);
-            jRViewer.setVisible(true);
-            pReporte.repaint();
-            pReporte.revalidate();
+            pReporte.add(jRViewer);
+            //jRViewer.setVisible(true);
+            //pReporte.repaint();
+            //pReporte.revalidate();
         } catch (JRException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }

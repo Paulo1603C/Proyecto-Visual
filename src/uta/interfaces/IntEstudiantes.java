@@ -26,9 +26,8 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     /**
      * Creates new form IntEstudiantes
      */
-    
     public IntEstudiantes() {
-      
+
         initComponents();
         bloquearBts();
         bloquearTxts();
@@ -39,66 +38,67 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     }
 
     public void insertarEstudiante() {
-        try {
-            String telefono;
-            String sexo = "";
-            String provincia = "";
-            String estadoCivil;
-            if (txtCedula.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar su cédula");
-                txtCedula.requestFocus();
-            } else if (txtApellido.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar su apellido");
-                txtApellido.requestFocus();
-            } else if (txtNombre.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar su nombre");
-                txtNombre.requestFocus();
-            } else if (cbProvincias.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(null, "Debes elegir una provincia");
-                cbProvincias.requestFocus();
-            } else if (cbEstadoCivil.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(null, "Debes elegir un estado civil");
-                cbEstadoCivil.requestFocus();
-            }
 
-            if (!rbFemenino.isSelected() && !rbMasculino.isSelected()) {
-                JOptionPane.showMessageDialog(null, "Debes elegir un género");
-                rbMasculino.requestFocus();
-            } else if (rbMasculino.isSelected()) {
-                sexo = "M";
-            } else if (rbFemenino.isSelected()) {
-                sexo = "F";
+        if (txtCedula.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar su cédula");
+            txtCedula.requestFocus();
+        } else if (txtApellido.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar su apellido");
+            txtApellido.requestFocus();
+        } else if (txtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar su nombre");
+            txtNombre.requestFocus();
+        } else if (cbProvincias.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Debes elegir una provincia");
+            cbProvincias.requestFocus();
+        } else if (cbEstadoCivil.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Debes elegir un estado civil");
+            cbEstadoCivil.requestFocus();
+        } else if (!rbFemenino.isSelected() && !rbMasculino.isSelected()) {
+            JOptionPane.showMessageDialog(null, "Debes elegir un género");
+            rbMasculino.requestFocus();
+        } else {
+            try {
+                String telefono;
+                String sexo = "";
+                String provincia = "";
+                String estadoCivil;
+                if (rbMasculino.isSelected()) {
+                    sexo = "M";
+                } else if (rbFemenino.isSelected()) {
+                    sexo = "F";
+                }
+                if (txtTelefono.getText().isEmpty()) {
+                    telefono = "XXXXXXXXXX";
+                } else {
+                    telefono = txtTelefono.getText();
+                }
+                String cedula = txtCedula.getText();
+                String apellido = txtApellido.getText();
+                String nombre = txtNombre.getText();
+                provincia = cbProvincias.getSelectedItem().toString();
+                estadoCivil = cbEstadoCivil.getSelectedItem().toString();
+                conexion cc = new conexion();
+                Connection cn = cc.conectar();
+                String sqlInsertar = "insert into estudiantes values(?,?,?,?,?,?,?,?)";
+                PreparedStatement pst = cn.prepareStatement(sqlInsertar);
+                pst.setString(1, cedula);
+                pst.setString(2, apellido.toUpperCase());
+                pst.setString(3, nombre.toUpperCase());
+                pst.setString(4, telefono);
+                pst.setString(5, sexo);
+                pst.setString(6, estadoCivil);
+                pst.setString(7, provincia.toUpperCase());
+                String id = cbCurso.getSelectedItem().toString();
+                System.out.println(id);
+                pst.setString(8, idCursoRegistro(id));
+                pst.executeUpdate();
+                limpiarCampos();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
             }
-
-            if (txtTelefono.getText().isEmpty()) {
-                telefono = "XXXXXXXXXX";
-            } else {
-                telefono = txtTelefono.getText();
-            }
-
-            String cedula = txtCedula.getText();
-            String apellido = txtApellido.getText();
-            String nombre = txtNombre.getText();
-            provincia = cbProvincias.getSelectedItem().toString();
-            estadoCivil = cbEstadoCivil.getSelectedItem().toString();
-            conexion cc = new conexion();
-            Connection cn = cc.conectar();
-            String sqlInsertar = "insert into estudiantes values(?,?,?,?,?,?,?,?)";
-            PreparedStatement pst = cn.prepareStatement(sqlInsertar);
-            pst.setString(1, cedula);
-            pst.setString(2, apellido.toUpperCase());
-            pst.setString(3, nombre.toUpperCase());
-            pst.setString(4, telefono);
-            pst.setString(5, sexo);
-            pst.setString(6, estadoCivil);
-            pst.setString(7, provincia.toUpperCase());
-            String id=cbCurso.getSelectedItem().toString();
-            System.out.println(id);
-            pst.setString(8, idCursoRegistro(id));
-            pst.executeUpdate();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
         }
+
     }
 
     public final void cargarProvincias() {
@@ -117,7 +117,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     }
 
     DefaultTableModel modeloDatos;
-    
+
     public final void cargarEstadoCivil() {
         try {
             conexion cc = new conexion();
@@ -134,7 +134,9 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         }
     }
 
-    ArrayList<curso> nomIdCurso;;
+    ArrayList<curso> nomIdCurso;
+
+    ;
     public final void cargarCursos() {
         try {
             conexion cc = new conexion();
@@ -143,9 +145,9 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             sql = "select * from curso";
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
-             nomIdCurso= new ArrayList<curso>();
+            nomIdCurso = new ArrayList<curso>();
             while (rs.next()) {
-                nomIdCurso.add(new curso(rs.getString("ID_CUR"),rs.getString("NOM_CUR")));
+                nomIdCurso.add(new curso(rs.getString("ID_CUR"), rs.getString("NOM_CUR")));
                 cbCurso.addItem(rs.getString("NOM_CUR"));
             }
         } catch (Exception ex) {
@@ -156,7 +158,7 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
     public void cargarDatos(String cedula) {
         try {
             String[] titulosTab = {
-                "Cédula", "Apellido", "Nombre", "Teléfono", "Género", "Estado civil", "Provincia","Curso"
+                "Cédula", "Apellido", "Nombre", "Teléfono", "Género", "Estado civil", "Provincia", "Curso"
             };
             modeloDatos = new DefaultTableModel(null, titulosTab);
             String registros[] = new String[8];
@@ -182,23 +184,23 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Sucedio algo en la carga de datos");
         }
     }
-    
-    public String nombreCursoTabla(String idCurso){
-        String nombre="";
+
+    public String nombreCursoTabla(String idCurso) {
+        String nombre = "";
         for (int i = 0; i < nomIdCurso.size(); i++) {
-            if(nomIdCurso.get(i).id.equals(idCurso) ){
-                nombre=nomIdCurso.get(i).nombre;
+            if (nomIdCurso.get(i).id.equals(idCurso)) {
+                nombre = nomIdCurso.get(i).nombre;
                 return nombre;
             }
         }
         return "ERROR";
     }
-    
-    public String idCursoRegistro(String nomCurso){
-        String idCurso="";
+
+    public String idCursoRegistro(String nomCurso) {
+        String idCurso = "";
         for (int i = 0; i < nomIdCurso.size(); i++) {
-            if(nomIdCurso.get(i).nombre.equals(nomCurso) ){
-                idCurso=nomIdCurso.get(i).id;
+            if (nomIdCurso.get(i).nombre.equals(nomCurso)) {
+                idCurso = nomIdCurso.get(i).id;
                 return idCurso;
             }
         }
@@ -335,19 +337,19 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "No se elimino");
         }
     }
-    
-    public void eliminarEstudiante(){
-       try {
-            String sqlDelete = "delete from estudiantes where CED_EST='" + txtCedula.getText()+"'";
+
+    public void eliminarEstudiante() {
+        try {
+            String sqlDelete = "delete from estudiantes where CED_EST='" + txtCedula.getText() + "'";
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             PreparedStatement pt = cn.prepareStatement(sqlDelete);
-             pt.executeUpdate();
+            pt.executeUpdate();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "No se puede eliminar este curso porque tiene estudiantes");
         }
     }
-    
+
     public boolean esCedula() {
         boolean cedulaCorrecta;
         try {
@@ -372,8 +374,6 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
         }
         return cedulaCorrecta;
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

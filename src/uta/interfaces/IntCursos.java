@@ -110,34 +110,38 @@ public class IntCursos extends javax.swing.JInternalFrame {
     }
 
     public void insertarCurso() {
-        try {
-            String nombre;
-            String nivel;
-            String descripcion;
-            if (txtNombre.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debes ingresar un nombre de curso");
-                txtNombre.requestFocus();
-            } else if (txtNivel.getText().isEmpty()) {
-                JOptionPane.showConfirmDialog(null, "Debes llenar el nivel");
-                txtNivel.requestFocus();
-            } else if (txtDescripcion.getText().isEmpty()) {
-                descripcion = "SIN DESCRIPCION";
+        String nombre;
+        String nivel;
+        String descripcion;
+        if (txtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debes ingresar un nombre de curso");
+            txtNombre.requestFocus();
+        } else if (txtNivel.getText().isEmpty()) {
+            JOptionPane.showConfirmDialog(null, "Debes llenar el nivel");
+            txtNivel.requestFocus();
+        } else {
+            try {
+                if (txtDescripcion.getText().isEmpty()) {
+                    descripcion = "SIN DESCRIPCION";
+                }
+                nombre = txtNombre.getText();
+                nivel = txtNivel.getText();
+                descripcion = txtDescripcion.getText();
+                conexion cc = new conexion();
+                Connection cn = cc.conectar();
+                String sqlInsertar = "insert into curso values(?,?,?,?)";
+                PreparedStatement pst = cn.prepareStatement(sqlInsertar);
+                pst.setString(1, codigo);
+                pst.setString(2, nombre.toUpperCase());
+                pst.setString(3, nivel);
+                pst.setString(4, descripcion.toUpperCase());
+                pst.executeUpdate();
+                limpiarCampos();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
             }
-            nombre = txtNombre.getText();
-            nivel = txtNivel.getText();
-            descripcion = txtDescripcion.getText();
-            conexion cc = new conexion();
-            Connection cn = cc.conectar();
-            String sqlInsertar = "insert into curso values(?,?,?,?)";
-            PreparedStatement pst = cn.prepareStatement(sqlInsertar);
-            pst.setString(1, codigo);
-            pst.setString(2, nombre.toUpperCase());
-            pst.setString(3, nivel);
-            pst.setString(4, descripcion.toUpperCase());
-            pst.executeUpdate();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
         }
+
     }
 
     public void cargarCampos() {
@@ -186,13 +190,12 @@ public class IntCursos extends javax.swing.JInternalFrame {
             pt.setString(2, txtNombre.getText());
             pt.setString(3, txtNivel.getText());
             pt.setString(4, txtDescripcion.getText());*/
-            
+
             int r = pt.executeUpdate();
-            if( r > 0 ){
-               JOptionPane.showMessageDialog(null, "Modificado con exito");    
+            if (r > 0) {
+                JOptionPane.showMessageDialog(null, "Modificado con exito");
             }
-            
-            
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "No se pudo modificar");
         }
@@ -489,7 +492,6 @@ public class IntCursos extends javax.swing.JInternalFrame {
 
     private void btInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInsertarActionPerformed
         insertarCurso();
-        limpiarCampos();
         cargarCursos("");
     }//GEN-LAST:event_btInsertarActionPerformed
 

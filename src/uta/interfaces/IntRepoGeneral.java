@@ -36,20 +36,22 @@ public class IntRepoGeneral extends javax.swing.JInternalFrame {
             conexion cc = new conexion();
             Connection cn = cc.conectar();
             Map parametro = new HashMap();
-            parametro.put("","");
-            JasperReport reporte = JasperCompileManager.compileReport("c://reportes/general.jrxml");
-            JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
+            parametro.put("", "");
+            JasperReport reporte = JasperCompileManager.compileReport("src\\uta\\reportes\\general.jrxml");
+            JasperPrint imprimir;
+            imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
             JRViewer jRViewer = new JRViewer(imprimir);
-            pReporte.removeAll();
+            //pReporte.removeAll();
             pReporte.setLayout(new BorderLayout());
-            pReporte.add(jRViewer,BorderLayout.CENTER);
-            jRViewer.setVisible(true);
-            pReporte.repaint();
-            pReporte.revalidate();
+            pReporte.add(jRViewer);
+            //jRViewer.setVisible(true);
+            //pReporte.repaint();
+            //pReporte.revalidate();
         } catch (JRException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,7 +71,7 @@ public class IntRepoGeneral extends javax.swing.JInternalFrame {
         );
         pReporteLayout.setVerticalGroup(
             pReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 722, Short.MAX_VALUE)
+            .addGap(0, 726, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -80,7 +82,7 @@ public class IntRepoGeneral extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pReporte, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

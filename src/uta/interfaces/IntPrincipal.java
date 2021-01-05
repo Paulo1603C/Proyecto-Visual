@@ -52,7 +52,6 @@ public class IntPrincipal extends javax.swing.JFrame {
     }
     
     public void abrirIntRepoProvincias() {
-       
         if (!(provincias.isVisible())) {
             dkInterfaces.add(provincias);
             provincias.setVisible(true);
@@ -61,7 +60,6 @@ public class IntPrincipal extends javax.swing.JFrame {
     }
 
     public void abrirIntUsuarios() {
-       
         if (!(usuarios.isVisible())) {
             dkInterfaces.add(usuarios);
             usuarios.setVisible(true);
