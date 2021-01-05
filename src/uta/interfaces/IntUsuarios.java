@@ -175,7 +175,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
             Connection cn = cc.conectar();
             String sql = "update usuarios set NOM_USU='" + nombre + "',APE_USU='" + apellido + "',PER_USU='" + cargo + "' where CED_USU='" + cedula + "';";
             PreparedStatement pst = cn.prepareStatement(sql);
-            int n = pst.executeUpdate(sql);
+            int n = pst.executeUpdate();
             jbtnNuevo.setEnabled(true);
             bloquearBotones();
             bloquearTextos();
@@ -577,6 +577,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
 
     private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
         bloquearBotones();
+        bloquearTextos();
         limpiarCampos();
         jtblUsuarios.clearSelection();
     }//GEN-LAST:event_jbtnCancelarActionPerformed
@@ -604,6 +605,7 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
             evt.consume();
         } else if (this.jtxtCedula.getText().length() == 10) {
             evt.consume();
+            Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_jtxtCedulaKeyTyped
 
@@ -611,6 +613,9 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
         char control = evt.getKeyChar();
         if (!(Character.isLetter(control))) {
             evt.consume();
+        } else if (jtxtNombre.getText().length() >= 15) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_jtxtNombreKeyTyped
 
@@ -618,6 +623,9 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
         char control = evt.getKeyChar();
         if (!(Character.isLetter(control))) {
             evt.consume();
+        } else if (jtxtApellido.getText().length() >= 15) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_jtxtApellidoKeyTyped
 
@@ -625,6 +633,9 @@ public class IntUsuarios extends javax.swing.JInternalFrame {
         char control = evt.getKeyChar();
         if (!(Character.isLetter(control)) && !(Character.isDigit(control))) {
             evt.consume();
+        } else if (jtxtContraseña.getText().length() >= 15) {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_jtxtContraseñaKeyTyped
 

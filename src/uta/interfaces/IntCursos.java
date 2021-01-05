@@ -176,17 +176,12 @@ public class IntCursos extends javax.swing.JInternalFrame {
         try {
             conexion cc = new conexion();
             Connection cn = cc.conectar();
-            /*String sqlUpdate = "update curso set NOM_CUR='" + txtNombre.getText()
+            /*String sqlUp = "update curso set NOM_CUR='" + txtNombre.getText()
                     + "',NIV_CUR='" + txtNivel.getText()
                     + "',OBS_CUR='" + txtDescripcion.getText()
                     + "' where ID_CUR='" + txtID.getText() + "'";*/
-            String sqlUp = "update curso set ID_CUR=?, NOM_CUR=?, NIV_CUR=?, OBS_CUR=? where ID_CUR = " + txtID.getText();
+            String sqlUp = "update curso set ID_CUR='"+txtID.getText()+",NOM_CUR='"+txtNombre.getText()+", NIV_CUR='"+txtNivel.getText()+", OBS_CUR='"+txtDescripcion.getText()+" where ID_CUR = '" + txtID.getText()+"'";
             PreparedStatement pt = cn.prepareStatement(sqlUp);
-            pt.setString(1, txtID.getText());
-            pt.setString(2, txtNombre.getText());
-            pt.setString(3, txtNivel.getText());
-            pt.setString(4, txtDescripcion.getText());
-            
             pt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Modificado con exito");
         } catch (Exception ex) {

@@ -102,7 +102,7 @@ public class IntReporteCursos extends javax.swing.JInternalFrame {
             Connection cn = cc.conectar();
             Map parametro = new HashMap();
             parametro.put("curso", txtCurso.getText());
-            JasperReport reporte = JasperCompileManager.compileReport("d://reportes/reporteFiltrado.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport("c://reportes/reporteFiltrado.jrxml");
             JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametro, cn);
             JRViewer jRViewer = new JRViewer(imprimir);
             pReporte.removeAll();

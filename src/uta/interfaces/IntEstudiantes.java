@@ -456,6 +456,12 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Estado Civil");
 
+        cbEstadoCivil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEstadoCivilActionPerformed(evt);
+            }
+        });
+
         bgSexo.add(rbMasculino);
         rbMasculino.setText("M");
 
@@ -806,6 +812,10 @@ public class IntEstudiantes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Ingrese solo letras");
         }
     }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void cbEstadoCivilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoCivilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbEstadoCivilActionPerformed
 
     /**
      * @param args the command line arguments
