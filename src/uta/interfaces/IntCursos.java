@@ -190,12 +190,10 @@ public class IntCursos extends javax.swing.JInternalFrame {
             pt.setString(2, txtNombre.getText());
             pt.setString(3, txtNivel.getText());
             pt.setString(4, txtDescripcion.getText());*/
-
             int r = pt.executeUpdate();
             if (r > 0) {
                 JOptionPane.showMessageDialog(null, "Modificado con exito");
             }
-
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "No se pudo modificar");
         }
