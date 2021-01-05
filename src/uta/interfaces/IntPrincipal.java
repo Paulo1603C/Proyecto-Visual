@@ -27,18 +27,22 @@ public class IntPrincipal extends javax.swing.JFrame {
     }
 
     public void abrirIntEstudiantes() {
-        if (!(estudiantes.isVisible())) {
-            dkInterfaces.add(estudiantes);
-            estudiantes.setVisible(true);
-            estudiantes.setClosable(true);
+        if (dkInterfaces.getAllFrames().length == 0) {
+            if (!(estudiantes.isVisible())) {
+                dkInterfaces.add(estudiantes);
+                estudiantes.setVisible(true);
+                estudiantes.setClosable(true);
+            }
         }
     }
 
     public void abrirIntReportes() {
-        if (!(repoCursos.isVisible())) {
-            dkInterfaces.add(repoCursos);
-            repoCursos.setVisible(true);
-            repoCursos.setClosable(true);
+        if (dkInterfaces.getAllFrames().length == 0) {
+            if (!(repoCursos.isVisible())) {
+                dkInterfaces.add(repoCursos);
+                repoCursos.setVisible(true);
+                repoCursos.setClosable(true);
+            }
         }
     }
 
@@ -51,27 +55,32 @@ public class IntPrincipal extends javax.swing.JFrame {
     }
 
     public void abrirIntRepoProvincias() {
-
-        if (!(provincias.isVisible())) {
-            dkInterfaces.add(provincias);
-            provincias.setVisible(true);
-            provincias.setClosable(true);
+        if (dkInterfaces.getAllFrames().length == 0) {
+            if (!(provincias.isVisible())) {
+                dkInterfaces.add(provincias);
+                provincias.setVisible(true);
+                provincias.setClosable(true);
+            }
         }
     }
 
     public void abrirIntUsuarios() {
-        if (!(usuarios.isVisible())) {
-            dkInterfaces.add(usuarios);
-            usuarios.setVisible(true);
-            usuarios.setClosable(true);
+        if (dkInterfaces.getAllFrames().length == 0) {
+            if (!(usuarios.isVisible())) {
+                dkInterfaces.add(usuarios);
+                usuarios.setVisible(true);
+                usuarios.setClosable(true);
+            }
         }
     }
 
     public void abrirIntCursos() {
-        if (!(cursos.isVisible())) {
-            dkInterfaces.add(cursos);
-            cursos.setVisible(true);
-            cursos.setClosable(true);
+        if (dkInterfaces.getAllFrames().length == 0) {
+            if (!(cursos.isVisible())) {
+                dkInterfaces.add(cursos);
+                cursos.setVisible(true);
+                cursos.setClosable(true);
+            }
         }
     }
 
@@ -114,6 +123,7 @@ public class IntPrincipal extends javax.swing.JFrame {
 
         mInterfaces.setText("Interfaces");
 
+        mIntEstudiantes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         mIntEstudiantes.setText("Estudiantes");
         mIntEstudiantes.setMargin(new java.awt.Insets(1, 1, 1, 1));
         mIntEstudiantes.addActionListener(new java.awt.event.ActionListener() {
@@ -123,6 +133,7 @@ public class IntPrincipal extends javax.swing.JFrame {
         });
         mInterfaces.add(mIntEstudiantes);
 
+        mIntUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         mIntUsuarios.setText("Usuarios");
         mIntUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +142,7 @@ public class IntPrincipal extends javax.swing.JFrame {
         });
         mInterfaces.add(mIntUsuarios);
 
+        mIntCursos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         mIntCursos.setText("Cursos");
         mIntCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +155,7 @@ public class IntPrincipal extends javax.swing.JFrame {
 
         mReportes.setText("Reportes");
 
+        mIntRepoCursos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
         mIntRepoCursos.setText("Cursos");
         mIntRepoCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,6 +164,7 @@ public class IntPrincipal extends javax.swing.JFrame {
         });
         mReportes.add(mIntRepoCursos);
 
+        mIntProvincias.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK));
         mIntProvincias.setText("Provincias");
         mIntProvincias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,6 +173,7 @@ public class IntPrincipal extends javax.swing.JFrame {
         });
         mReportes.add(mIntProvincias);
 
+        mIntGeneral.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_MASK));
         mIntGeneral.setText("General");
         mIntGeneral.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +191,7 @@ public class IntPrincipal extends javax.swing.JFrame {
             }
         });
 
+        miLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         miLogout.setText("Logout");
         miLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,6 +200,7 @@ public class IntPrincipal extends javax.swing.JFrame {
         });
         mSesion.add(miLogout);
 
+        miSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         miSalir.setText("Salir");
         miSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
